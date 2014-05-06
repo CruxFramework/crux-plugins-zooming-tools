@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @see http://lab.hakim.se/zoom-js/
  * Licensed by http://opensource.org/licenses/MIT
  */
+@PartialSupport
 public class Zoom
 {
 	private static Zoom instance;
