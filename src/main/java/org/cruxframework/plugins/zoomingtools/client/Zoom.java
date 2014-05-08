@@ -15,6 +15,8 @@
  */
 package org.cruxframework.plugins.zoomingtools.client;
 
+import java.util.logging.Logger;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.RepeatingCommand;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -31,6 +33,8 @@ import com.google.gwt.user.client.ui.Widget;
 @PartialSupport
 public class Zoom
 {
+	private static final Logger LOG = Logger.getLogger(Zoom.class.getName());
+	
 	private static Zoom instance;
 
 	private Zoom()
@@ -108,7 +112,6 @@ public class Zoom
 		return element.getBoundingClientRect().height;
 	}-*/;
 
-
 	private static native boolean isSupported() /*-{
 	 	return 'WebkitTransform' in $doc.body.style ||
 			   'MozTransform' in $doc.body.style    ||
@@ -148,6 +151,11 @@ public class Zoom
 		doMagnify(pageOffsetX, pageOffsetY, elementOffsetX, elementOffsetY, scale);
 		setLevel(scale);
 	}
+	
+	private static native boolean isElementInDOM(Element element) /*-{
+		return element.getBoundingClientRect().width  != 0 ||
+			   element.getBoundingClientRect().height != 0;
+	}-*/;
 	
 	/**
 	 * Applies the CSS required to zoom in, prioritizes use of CSS3
@@ -235,6 +243,7 @@ public class Zoom
 		to(widget.getElement());
 	}
 
+	
 	public void to(Element element)
 	{
 		to(element, true);
@@ -250,7 +259,26 @@ public class Zoom
 	 *   - width/height: the portion of the screen to zoom in on
 	 *   - scale: can be used instead of width/height to explicitly set scale
 	 */
-	public void to(Element element, boolean pan)
+	public void to(final Element element, final boolean pan)
+	{
+		Scheduler.get().scheduleFixedDelay(new RepeatingCommand() 
+		{
+			@Override
+			public boolean execute() 
+			{
+				LOG.info("Zooming activated: waiting for element present in DOM.");
+		
+				if(isElementInDOM(element))
+				{
+					doTo(element, pan);
+					return false;
+				}
+				return true;
+			}
+		}, 100);		
+	}
+	
+	private void doTo(Element element, boolean pan)
 	{
 		// Due to an implementation limitation we can't zoom in
 		// to another element without zooming out first
@@ -314,8 +342,11 @@ public class Zoom
 	public void out()
 	{
 		keepPan = false;
-		magnify( getXScrollOffset(), getYScrollOffset(), 0d, 0d, 1d );
-		level = 1d;
+		if(level != 1d)
+		{
+			magnify( getXScrollOffset(), getYScrollOffset(), 0d, 0d, 1d );
+			level = 1d;
+		}
 	}
 
 	public void setMouseX(double mouseX) 
