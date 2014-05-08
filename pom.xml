@@ -44,4 +44,17 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+        <profile>
+            <id>internal</id>
+            <distributionManagement>
+                <repository>
+                    <id>crux-internal-repository</id>
+                    <name>Crux Internal Repository</name>
+                    <url>http://repo.sysmap.com.br/artifactory/sysmap-internal</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+     </profiles>
 </project>
