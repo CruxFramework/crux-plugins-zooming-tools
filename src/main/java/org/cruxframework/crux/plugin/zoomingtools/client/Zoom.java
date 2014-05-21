@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package org.cruxframework.plugins.zoomingtools.client;
+package org.cruxframework.crux.plugin.zoomingtools.client;
 
 import java.util.logging.Logger;
 
@@ -132,16 +132,16 @@ public class Zoom
 	private native void addEventListeners() /*-{
 		// Zoom out if the user hits escape
 		$doc.addEventListener( 'keyup', function( event ) {
-			if( @org.cruxframework.plugins.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.plugins.zoomingtools.client.Zoom::getLevel()() !== 1 && event.keyCode === 27 ) {
-				@org.cruxframework.plugins.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.plugins.zoomingtools.client.Zoom::out()();
+			if( @org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getLevel()() !== 1 && event.keyCode === 27 ) {
+				@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::out()();
 			}
 		} );
 
 		// Monitor mouse movement for panning
 		$doc.addEventListener( 'mousemove', function( event ) {
-			if( @org.cruxframework.plugins.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.plugins.zoomingtools.client.Zoom::getLevel()() !== 1 ) {
-				@org.cruxframework.plugins.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.plugins.zoomingtools.client.Zoom::setMouseX(D)(event.clientX);
-				@org.cruxframework.plugins.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.plugins.zoomingtools.client.Zoom::setMouseY(D)(event.clientY);
+			if( @org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getLevel()() !== 1 ) {
+				@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::setMouseX(D)(event.clientX);
+				@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::getInstance()().@org.cruxframework.crux.plugin.zoomingtools.client.Zoom::setMouseY(D)(event.clientY);
 			}
 		} );
 	}-*/;
@@ -168,7 +168,7 @@ public class Zoom
 	 * @param scale
 	 */
 	private native void doMagnify(double pageOffsetX, double pageOffsetY, double elementOffsetX, double elementOffsetY, double scale) /*-{
-		if( @org.cruxframework.plugins.zoomingtools.client.Zoom::isSupported()() ) {
+		if( @org.cruxframework.crux.plugin.zoomingtools.client.Zoom::isSupported()() ) {
 			var origin = pageOffsetX +'px '+ pageOffsetY +'px',
 				transform = 'translate('+ -elementOffsetX +'px,'+ -elementOffsetY +'px) scale('+ scale +')';
 
